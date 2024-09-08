@@ -108,7 +108,9 @@ public class StudentServicesImpl implements StudentServices {
                 .orElseThrow(() -> new RuntimeException("Khong tim thay admin voi idNum: " + idNum));
 
         if(admin.getRole() == Role.ADMIN){
-            return studentRepositories.findAll();
+            return studentRepositories.findAll()
+                    .stream().map(StudentResponse::fromStudent)
+                    .toList();
         } else {
             throw new Exception("Khong phai la Admin");
         }

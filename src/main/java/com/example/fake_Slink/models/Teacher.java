@@ -98,7 +98,8 @@ public class Teacher implements UserDetails {
             CreateTeacherRequest request,
             String newIdNum,
             String encodePassword,
-            Department department
+            Department department,
+            Role role
     ) {
         return Teacher.builder()
                 .idNum(newIdNum)
@@ -112,7 +113,7 @@ public class Teacher implements UserDetails {
                 .sex(request.getSex())
                 .address(request.getAddress())
                 .department(department)
-                .role(Role.TEACHER)
+                .role(role)
                 .build();
     }
 }

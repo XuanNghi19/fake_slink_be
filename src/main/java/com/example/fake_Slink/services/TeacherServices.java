@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface TeacherServices {
     Boolean addTeachers(List<CreateTeacherRequest> list) throws Exception;
+    Boolean addAdmin(CreateTeacherRequest admin) throws Exception;
     AuthenticationResponse authentication(AuthenticationRequest authenticationRequests) throws Exception;
-    TeacherResponse getTeacherDetail(IntrospectRequest introspectRequest) throws Exception;
 }
