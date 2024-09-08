@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface TeacherRepositories extends JpaRepository<Teacher, Integer> {
     Optional<Teacher> findByIdNum(String idNum);
+    boolean existsByIdNum(String idNum);
 }

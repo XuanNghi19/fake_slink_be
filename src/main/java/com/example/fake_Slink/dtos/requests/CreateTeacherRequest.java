@@ -12,16 +12,15 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CreateStudentRequest {
-    String course;
+public class CreateTeacherRequest {
     String password;
     String name;
-    String cccd;
     Date dob;
     String email;
+    String cccd;
     String phone1;
     String phone2;
     String sex;
     String address;
-    String majorId;
+    String departmentId;
 }

@@ -1,5 +1,6 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.CreateTeacherRequest;
 import com.example.fake_Slink.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -91,5 +92,27 @@ public class Teacher implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public static Teacher fromCreateTeacherRequest(
+            CreateTeacherRequest request,
+            String newIdNum,
+            String encodePassword,
+            Department department
+    ) {
+        return Teacher.builder()
+                .idNum(newIdNum)
+                .password(encodePassword)
+                .name(request.getName())
+                .dob(request.getDob())
+                .email(request.getEmail())
+                .cccd(request.getCccd())
+                .phone1(request.getPhone1())
+                .phone2(request.getPhone2())
+                .sex(request.getSex())
+                .address(request.getAddress())
+                .department(department)
+                .role(Role.TEACHER)
+                .build();
     }
 }

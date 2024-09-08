@@ -10,6 +10,7 @@ public interface StudentServices {
     Boolean addStudents(List<CreateStudentRequest> list) throws Exception;
     AuthenticationResponse authentication(AuthenticationRequest authenticationRequests) throws Exception;
     StudentResponse getStudentDetail(IntrospectRequest introspectRequest) throws Exception;
+    List<StudentResponse> getStudentList(IntrospectRequest introspectRequest) throws Exception;
     StudentResponse updateStudent(UpdateStudentRequest updateStudentRequest) throws Exception;
     Boolean updatePassword(UpdatePasswordRequest updatePasswordRequest) throws Exception;
 

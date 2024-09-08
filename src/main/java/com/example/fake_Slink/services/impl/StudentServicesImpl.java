@@ -5,13 +5,12 @@ import com.example.fake_Slink.dtos.requests.*;
 import com.example.fake_Slink.dtos.responses.AuthenticationResponse;
 import com.example.fake_Slink.dtos.responses.IntrospectResponse;
 import com.example.fake_Slink.dtos.responses.StudentResponse;
+import com.example.fake_Slink.enums.Role;
 import com.example.fake_Slink.models.DraftStudentNum;
 import com.example.fake_Slink.models.Major;
 import com.example.fake_Slink.models.Student;
-import com.example.fake_Slink.repositories.DraftStudentNumRepositories;
-import com.example.fake_Slink.repositories.DraftTeacherNumRepositories;
-import com.example.fake_Slink.repositories.MajorRepositories;
-import com.example.fake_Slink.repositories.StudentRepositories;
+import com.example.fake_Slink.models.Teacher;
+import com.example.fake_Slink.repositories.*;
 import com.example.fake_Slink.services.StudentServices;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.transaction.Transactional;
@@ -27,6 +26,7 @@ public class StudentServicesImpl implements StudentServices {
 
     private final JwtUtils jwtUtils;
     private final StudentRepositories studentRepositories;
+    private final TeacherRepositories teacherRepositories;
     private final PasswordEncoder passwordEncoder;
     private final DraftStudentNumRepositories draftStudentNumRepositories;
     private final MajorRepositories majorRepositories;
@@ -93,6 +93,25 @@ public class StudentServicesImpl implements StudentServices {
                 .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idNum: " + idNum));
 
         return StudentResponse.fromStudent(student);
+    }
+
+    @Override
+    public List<StudentResponse> getStudentList(IntrospectRequest introspectRequest) throws Exception {
+        IntrospectResponse introspectResponse = jwtUtils.introspect(introspectRequest);
+        if(!introspectResponse.getValid()) {
+            throw new RuntimeException("Token failed!");
+        }
+
+        SignedJWT signedJWT = SignedJWT.parse(introspectRequest.getToken());
+        String idNum = signedJWT.getJWTClaimsSet().getSubject();
+        Teacher admin = teacherRepositories.findByIdNum(idNum)
+                .orElseThrow(() -> new RuntimeException("Khong tim thay admin voi idNum: " + idNum));
+
+        if(admin.getRole() == Role.ADMIN){
+            return studentRepositories.findAll();
+        } else {
+            throw new Exception("Khong phai la Admin");
+        }
     }
 
     @Override
