@@ -13,5 +13,4 @@ public interface StudentServices {
     List<StudentResponse> getStudentList(IntrospectRequest introspectRequest) throws Exception;
     StudentResponse updateStudent(UpdateStudentRequest updateStudentRequest) throws Exception;
     Boolean updatePassword(UpdatePasswordRequest updatePasswordRequest) throws Exception;
-
 }

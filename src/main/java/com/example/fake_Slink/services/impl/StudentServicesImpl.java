@@ -63,7 +63,6 @@ public class StudentServicesImpl implements StudentServices {
         }
         return true;
     }
-
     @Override
     public AuthenticationResponse authentication(AuthenticationRequest authenticationRequests) throws Exception {
         Student existingStudent = studentRepositories.findByIdNum(authenticationRequests.getIdNum())
@@ -78,7 +77,6 @@ public class StudentServicesImpl implements StudentServices {
         }
         throw new Exception("Thong tin dang nhap khong chinh xac");
     }
-
     @Override
     public StudentResponse getStudentDetail(IntrospectRequest introspectRequest) throws Exception {
 
@@ -94,7 +92,6 @@ public class StudentServicesImpl implements StudentServices {
 
         return StudentResponse.fromStudent(student);
     }
-
     @Override
     public List<StudentResponse> getStudentList(IntrospectRequest introspectRequest) throws Exception {
         IntrospectResponse introspectResponse = jwtUtils.introspect(introspectRequest);
@@ -115,7 +112,6 @@ public class StudentServicesImpl implements StudentServices {
             throw new Exception("Khong phai la Admin");
         }
     }
-
     @Override
     public StudentResponse updateStudent(UpdateStudentRequest updateStudentRequest) throws Exception {
 
@@ -133,7 +129,6 @@ public class StudentServicesImpl implements StudentServices {
 
         return StudentResponse.fromStudent(studentRepositories.save(student));
     }
-
     @Override
     public Boolean updatePassword(UpdatePasswordRequest updatePasswordRequest) throws Exception {
 
