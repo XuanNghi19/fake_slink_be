@@ -21,7 +21,7 @@ public class StudentController {
 
     private final StudentServices studentServices;
 
-    @PutMapping("/addStudents")
+    @PostMapping("/add_students")
     public ApiResponse<Boolean> addStudents(
             @RequestBody @Valid List<CreateStudentRequest> list,
             BindingResult result
@@ -33,6 +33,7 @@ public class StudentController {
                     .toList();
 
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message(errorMessages.toString())
                     .result(false)
                     .build();
@@ -41,6 +42,7 @@ public class StudentController {
         try {
             Boolean status = studentServices.addStudents(list);
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.OK.value())
                     .result(status)
                     .message(HttpStatus.OK.toString())
                     .build();
@@ -60,6 +62,7 @@ public class StudentController {
                     .map(FieldError::getDefaultMessage)
                     .toList();
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message(errorMessages.toString())
                     .result(false)
                     .build();
@@ -68,6 +71,7 @@ public class StudentController {
         try {
             AuthenticationResponse response = studentServices.authentication(authenticationRequest);
             return ApiResponse.<AuthenticationResponse>builder()
+                    .code(HttpStatus.OK.value())
                     .result(response)
                     .message(HttpStatus.OK.toString())
                     .build();
@@ -76,9 +80,9 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/student_detail")
+    @GetMapping("/student_detail")
     public ApiResponse<?> getStudentDetail(
-            @RequestBody @Valid IntrospectRequest request,
+            @RequestHeader("Authorization") @Valid IntrospectRequest request,
             BindingResult result
     ) {
         if(result.hasErrors()) {
@@ -87,6 +91,7 @@ public class StudentController {
                     .map(FieldError::getDefaultMessage)
                     .toList();
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message(errorMessages.toString())
                     .result(false)
                     .build();
@@ -95,6 +100,7 @@ public class StudentController {
         try {
             StudentResponse response = studentServices.getStudentDetail(request);
             return ApiResponse.<StudentResponse>builder()
+                    .code(HttpStatus.OK.value())
                     .result(response)
                     .message(HttpStatus.OK.toString())
                     .build();
@@ -103,9 +109,9 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/get_student_list")
+    @GetMapping("/get_student_list")
     public ApiResponse<?> getStudentList(
-        @RequestBody @Valid IntrospectRequest request,
+        @RequestHeader("Authorization") @Valid IntrospectRequest request,
         BindingResult result
     ) {
         if(result.hasErrors()) {
@@ -114,6 +120,7 @@ public class StudentController {
                     .map(FieldError::getDefaultMessage)
                     .toList();
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message(errorMessages.toString())
                     .result(false)
                     .build();
@@ -122,6 +129,7 @@ public class StudentController {
         try {
             List<StudentResponse> list = studentServices.getStudentList(request);
             return ApiResponse.<List<StudentResponse>>builder()
+                    .code(HttpStatus.OK.value())
                     .result(list)
                     .message(HttpStatus.OK.toString())
                     .build();
@@ -130,7 +138,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/update_student_detail")
+    @PutMapping("/update_student_detail")
     public ApiResponse<?> updateStudentDetail(
             @RequestBody @Valid UpdateStudentRequest request,
             BindingResult result
@@ -141,6 +149,7 @@ public class StudentController {
                     .map(FieldError::getDefaultMessage)
                     .toList();
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message(errorMessages.toString())
                     .result(false)
                     .build();
@@ -149,6 +158,7 @@ public class StudentController {
         try {
             StudentResponse response = studentServices.updateStudent(request);
             return ApiResponse.<StudentResponse>builder()
+                    .code(HttpStatus.OK.value())
                     .result(response)
                     .message(HttpStatus.OK.toString())
                     .build();
@@ -157,7 +167,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("/update_password")
+    @PatchMapping("/update_password")
     public ApiResponse<?> updatePassword(
             @RequestBody @Valid UpdatePasswordRequest request,
             BindingResult result
@@ -168,6 +178,7 @@ public class StudentController {
                     .map(FieldError::getDefaultMessage)
                     .toList();
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
                     .message(errorMessages.toString())
                     .result(false)
                     .build();
@@ -176,6 +187,7 @@ public class StudentController {
         try {
             Boolean status = studentServices.updatePassword(request);
             return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.OK.value())
                     .result(status)
                     .message(HttpStatus.OK.toString())
                     .build();
