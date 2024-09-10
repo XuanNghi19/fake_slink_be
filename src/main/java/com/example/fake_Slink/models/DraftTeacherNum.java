@@ -7,13 +7,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "draft_num")
+@Table(name = "draft_teacher_num")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class DraftTeacherNum {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+
     @OneToOne
     @JoinColumn(name = "department_id")
     private Department department;

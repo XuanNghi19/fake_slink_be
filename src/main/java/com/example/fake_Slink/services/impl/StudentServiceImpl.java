@@ -11,7 +11,7 @@ import com.example.fake_Slink.models.Major;
 import com.example.fake_Slink.models.Student;
 import com.example.fake_Slink.models.Teacher;
 import com.example.fake_Slink.repositories.*;
-import com.example.fake_Slink.services.StudentServices;
+import com.example.fake_Slink.services.StudentService;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class StudentServicesImpl implements StudentServices {
+public class StudentServiceImpl implements StudentService {
 
     private final JwtUtils jwtUtils;
     private final StudentRepositories studentRepositories;
@@ -84,8 +84,8 @@ public class StudentServicesImpl implements StudentServices {
         if(!introspectResponse.getValid()) {
             throw new RuntimeException("Token failed!");
         }
-
-        SignedJWT signedJWT = SignedJWT.parse(introspectRequest.getToken());
+        String token = introspectRequest.getToken().substring(7);
+        SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Student student = studentRepositories.findByIdNum(idNum)
                 .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idNum: " + idNum));
@@ -99,7 +99,8 @@ public class StudentServicesImpl implements StudentServices {
             throw new RuntimeException("Token failed!");
         }
 
-        SignedJWT signedJWT = SignedJWT.parse(introspectRequest.getToken());
+        String token = introspectRequest.getToken().substring(7);
+        SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Teacher admin = teacherRepositories.findByIdNum(idNum)
                 .orElseThrow(() -> new RuntimeException("Khong tim thay admin voi idNum: " + idNum));
@@ -120,7 +121,8 @@ public class StudentServicesImpl implements StudentServices {
             throw new RuntimeException("Token failed!");
         }
 
-        SignedJWT signedJWT = SignedJWT.parse(updateStudentRequest.getIntrospectRequest().getToken());
+        String token = updateStudentRequest.getIntrospectRequest().getToken().substring(7);
+        SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Student student = studentRepositories.findByIdNum(idNum)
                 .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idNum: " + idNum));
@@ -137,7 +139,8 @@ public class StudentServicesImpl implements StudentServices {
             throw new RuntimeException("Token failed!");
         }
 
-        SignedJWT signedJWT = SignedJWT.parse(updatePasswordRequest.getIntrospectRequest().getToken());
+        String token = updatePasswordRequest.getIntrospectRequest().getToken().substring(7);
+        SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Student student = studentRepositories.findByIdNum(idNum)
                 .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idNum: " + idNum));

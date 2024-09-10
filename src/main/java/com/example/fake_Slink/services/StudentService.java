@@ -6,7 +6,7 @@ import com.example.fake_Slink.dtos.responses.StudentResponse;
 
 import java.util.List;
 
-public interface StudentServices {
+public interface StudentService {
     Boolean addStudents(List<CreateStudentRequest> list) throws Exception;
     AuthenticationResponse authentication(AuthenticationRequest authenticationRequests) throws Exception;
     StudentResponse getStudentDetail(IntrospectRequest introspectRequest) throws Exception;

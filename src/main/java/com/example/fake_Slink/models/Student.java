@@ -64,7 +64,8 @@ public class Student implements UserDetails {
     @Column(name = "role")
     private Role role;
 
-    @Column(name = "major_id")
+    @ManyToOne
+    @JoinColumn(name = "major_id")
     private Major major;
 
     @Override

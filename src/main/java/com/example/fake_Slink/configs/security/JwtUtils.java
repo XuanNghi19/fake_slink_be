@@ -2,7 +2,6 @@ package com.example.fake_Slink.configs.security;
 
 import com.example.fake_Slink.dtos.requests.IntrospectRequest;
 import com.example.fake_Slink.dtos.responses.IntrospectResponse;
-import com.example.fake_Slink.enums.Role;
 import com.example.fake_Slink.models.Student;
 import com.example.fake_Slink.models.Teacher;
 import com.nimbusds.jose.*;
@@ -13,7 +12,6 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
@@ -21,10 +19,7 @@ import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
-@Builder
 public class JwtUtils {
-
-    private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.expiration}")
     private Long expiration;

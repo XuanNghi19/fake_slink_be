@@ -3,13 +3,11 @@ package com.example.fake_Slink.services.impl;
 import com.example.fake_Slink.configs.security.JwtUtils;
 import com.example.fake_Slink.dtos.requests.AuthenticationRequest;
 import com.example.fake_Slink.dtos.requests.CreateTeacherRequest;
-import com.example.fake_Slink.dtos.requests.IntrospectRequest;
 import com.example.fake_Slink.dtos.responses.AuthenticationResponse;
-import com.example.fake_Slink.dtos.responses.TeacherResponse;
 import com.example.fake_Slink.enums.Role;
 import com.example.fake_Slink.models.*;
 import com.example.fake_Slink.repositories.*;
-import com.example.fake_Slink.services.TeacherServices;
+import com.example.fake_Slink.services.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherServicesImpl implements TeacherServices {
+public class TeacherServiceImpl implements TeacherService {
     private final JwtUtils jwtUtils;
     private final TeacherRepositories teacherRepositories;
     private final PasswordEncoder passwordEncoder;

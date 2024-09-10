@@ -59,7 +59,8 @@ public class Teacher implements UserDetails {
     @Column(name = "role")
     private Role role;
 
-    @Column(name = "department_id")
+    @ManyToOne
+    @JoinColumn(name = "department_id")
     private Department department;
 
     @Override

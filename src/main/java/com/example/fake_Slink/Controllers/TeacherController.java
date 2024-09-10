@@ -4,7 +4,7 @@ import com.example.fake_Slink.dtos.requests.AuthenticationRequest;
 import com.example.fake_Slink.dtos.requests.CreateTeacherRequest;
 import com.example.fake_Slink.dtos.responses.ApiResponse;
 import com.example.fake_Slink.dtos.responses.AuthenticationResponse;
-import com.example.fake_Slink.services.TeacherServices;
+import com.example.fake_Slink.services.TeacherService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("${api.prefix}/teachers")
 public class TeacherController {
 
-    private final TeacherServices teacherServices;
+    private final TeacherService teacherServices;
 
     @PostMapping("/add_teacher")
     public ApiResponse<?> addTeacher(
