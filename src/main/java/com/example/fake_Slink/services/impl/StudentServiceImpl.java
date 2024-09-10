@@ -25,11 +25,11 @@ import java.util.List;
 public class StudentServiceImpl implements StudentService {
 
     private final JwtUtils jwtUtils;
-    private final StudentRepositories studentRepositories;
-    private final TeacherRepositories teacherRepositories;
+    private final StudentRepository studentRepositories;
+    private final TeacherRepository teacherRepositories;
     private final PasswordEncoder passwordEncoder;
-    private final DraftStudentNumRepositories draftStudentNumRepositories;
-    private final MajorRepositories majorRepositories;
+    private final DraftStudentNumRepository draftStudentNumRepositories;
+    private final MajorRepository majorRepositories;
 
     @Transactional
     @Override

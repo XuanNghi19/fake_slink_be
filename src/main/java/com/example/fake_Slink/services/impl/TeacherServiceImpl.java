@@ -18,10 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherServiceImpl implements TeacherService {
     private final JwtUtils jwtUtils;
-    private final TeacherRepositories teacherRepositories;
+    private final TeacherRepository teacherRepositories;
     private final PasswordEncoder passwordEncoder;
-    private final DraftTeacherNumRepositories draftTeacherNumRepositories;
-    private final DepartmentRepositories departmentRepositories;
+    private final DraftTeacherNumRepository draftTeacherNumRepositories;
+    private final DepartmentRepository departmentRepositories;
 
     @Override
     public Boolean addTeachers(List<CreateTeacherRequest> list) throws Exception {

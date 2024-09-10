@@ -1,13 +1,9 @@
 package com.example.fake_Slink.configs.security;
 
-import com.example.fake_Slink.dtos.requests.CreateStudentRequest;
-import com.example.fake_Slink.models.DraftStudentNum;
-import com.example.fake_Slink.models.Major;
 import com.example.fake_Slink.models.Student;
 import com.example.fake_Slink.models.Teacher;
-import com.example.fake_Slink.repositories.StudentRepositories;
-import com.example.fake_Slink.repositories.TeacherRepositories;
-import jakarta.transaction.Transactional;
+import com.example.fake_Slink.repositories.StudentRepository;
+import com.example.fake_Slink.repositories.TeacherRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,15 +16,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
 import java.util.Optional;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final StudentRepositories studentRepositories;
-    private final TeacherRepositories teacherRepositories;
+    private final StudentRepository studentRepositories;
+    private final TeacherRepository teacherRepositories;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
