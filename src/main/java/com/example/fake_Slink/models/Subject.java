@@ -1,5 +1,7 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.CreateMajorRequest;
+import com.example.fake_Slink.dtos.requests.CreateSubjectRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,4 +30,13 @@ public class Subject {
 
     @Column(name = "describe")
     private String describe;
+
+    public static Subject fromCreateSubjectRequest(CreateSubjectRequest request) {
+        return Subject.builder()
+                .idNum(request.getIdNum())
+                .subjectName(request.getSubjectName())
+                .credits(request.getCredits())
+                .describe(request.getDescribe())
+                .build();
+    }
 }

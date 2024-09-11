@@ -25,7 +25,6 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Boolean addTeachers(List<CreateTeacherRequest> list) throws Exception {
-        List<Student> studentList;
         for (var x : list) {
             String newNum = "";
             Department department = departmentRepositories.findById(x.getDepartmentId())

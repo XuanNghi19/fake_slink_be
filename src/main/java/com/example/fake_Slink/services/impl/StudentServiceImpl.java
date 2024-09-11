@@ -34,7 +34,6 @@ public class StudentServiceImpl implements StudentService {
     @Transactional
     @Override
     public Boolean addStudents(List<CreateStudentRequest> list) throws Exception {
-        List<Student> studentList;
         for (var x : list) {
             String newNum = "";
             Major major = majorRepositories.findById(x.getMajorId())
