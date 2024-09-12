@@ -30,6 +30,16 @@ public class TeacherServiceImpl implements TeacherService {
             Department department = departmentRepositories.findById(x.getDepartmentId())
                     .orElseThrow(() -> new RuntimeException("Khong tim thay departmentId: " + x.getDepartmentId()));
             DraftTeacherNum draftTeacherNum = draftTeacherNumRepositories.findByDepartment(department);
+
+            if(draftTeacherNum == null) {
+                DraftTeacherNum newDraftTeacherNum = DraftTeacherNum.builder()
+                        .department(department)
+                        .teacherNum(1)
+                        .build();
+                draftTeacherNumRepositories.save(newDraftTeacherNum);
+                draftTeacherNum = draftTeacherNumRepositories.findByDepartment(department);
+            }
+
             Integer trashNum = draftTeacherNum.getTeacherNum();
 
             if (trashNum < 10) {
@@ -62,6 +72,16 @@ public class TeacherServiceImpl implements TeacherService {
         Department department = departmentRepositories.findById(admin.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Khong tim thay departmentId: " + admin.getDepartmentId()));
         DraftTeacherNum draftTeacherNum = draftTeacherNumRepositories.findByDepartment(department);
+
+        if(draftTeacherNum == null) {
+            DraftTeacherNum newDraftTeacherNum = DraftTeacherNum.builder()
+                    .department(department)
+                    .teacherNum(1)
+                    .build();
+            draftTeacherNumRepositories.save(newDraftTeacherNum);
+            draftTeacherNum = draftTeacherNumRepositories.findByDepartment(department);
+        }
+
         Integer trashNum = draftTeacherNum.getTeacherNum();
 
         if (trashNum < 10) {

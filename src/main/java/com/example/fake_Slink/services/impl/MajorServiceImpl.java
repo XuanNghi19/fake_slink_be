@@ -1,7 +1,9 @@
 package com.example.fake_Slink.services.impl;
 
 import com.example.fake_Slink.dtos.requests.CreateMajorRequest;
+import com.example.fake_Slink.models.Department;
 import com.example.fake_Slink.models.Major;
+import com.example.fake_Slink.repositories.DepartmentRepository;
 import com.example.fake_Slink.repositories.MajorRepository;
 import com.example.fake_Slink.services.MajorService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.List;
 public class MajorServiceImpl implements MajorService {
 
     private final MajorRepository majorRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public boolean addMajors(List<CreateMajorRequest> list) throws Exception {
@@ -21,7 +24,10 @@ public class MajorServiceImpl implements MajorService {
             if(majorRepository.existsById(x.getId())) {
                 throw new RuntimeException("id da ton tai");
             }
-            Major newMajor = Major.fromCreateMajorRequest(x);
+            Department department = departmentRepository.findById(x.getDepartmentId()).orElseThrow(
+                    () -> new RuntimeException("Id department khong ton tai!")
+            );
+            Major newMajor = Major.fromCreateMajorRequest(x, department);
             majorRepository.save(newMajor);
         }
         return true;

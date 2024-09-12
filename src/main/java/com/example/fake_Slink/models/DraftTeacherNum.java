@@ -17,7 +17,6 @@ public class DraftTeacherNum {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-
     @OneToOne
     @JoinColumn(name = "department_id")
     private Department department;

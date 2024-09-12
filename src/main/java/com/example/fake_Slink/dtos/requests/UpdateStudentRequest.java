@@ -13,7 +13,6 @@ import java.util.Date;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdateStudentRequest {
-    IntrospectRequest introspectRequest;
     String name;
     Date dob;
     String email;

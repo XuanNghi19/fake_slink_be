@@ -1,6 +1,5 @@
 package com.example.fake_Slink.configs.security;
 
-import com.example.fake_Slink.dtos.requests.IntrospectRequest;
 import com.example.fake_Slink.dtos.responses.IntrospectResponse;
 import com.example.fake_Slink.models.Student;
 import com.example.fake_Slink.models.Teacher;
@@ -9,7 +8,6 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -63,11 +61,8 @@ public class JwtUtils {
         }
     }
 
-    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
-        String token = request.getToken();
-
+    public IntrospectResponse introspect(String token) throws JOSEException, ParseException {
         JWSVerifier verifier = new MACVerifier(secretKey.getBytes());
-
         SignedJWT signedJWT = SignedJWT.parse(token);
 
         Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();

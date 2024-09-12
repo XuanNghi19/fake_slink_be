@@ -82,23 +82,11 @@ public class StudentController {
 
     @GetMapping("/student_detail")
     public ApiResponse<?> getStudentDetail(
-            @RequestHeader("Authorization") @Valid IntrospectRequest request,
-            BindingResult result
+        @RequestHeader("Authorization") String authorizationHeader
     ) {
-        if(result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList();
-            return ApiResponse.<Boolean>builder()
-                    .code(HttpStatus.BAD_REQUEST.value())
-                    .message(errorMessages.toString())
-                    .result(false)
-                    .build();
-        }
-
         try {
-            StudentResponse response = studentServices.getStudentDetail(request);
+            String token = authorizationHeader.substring(7);
+            StudentResponse response = studentServices.getStudentDetail(token);
             return ApiResponse.<StudentResponse>builder()
                     .code(HttpStatus.OK.value())
                     .result(response)
@@ -111,23 +99,11 @@ public class StudentController {
 
     @GetMapping("/get_student_list")
     public ApiResponse<?> getStudentList(
-        @RequestHeader("Authorization") @Valid IntrospectRequest request,
-        BindingResult result
+        @RequestHeader("Authorization") String authorizationHeader
     ) {
-        if(result.hasErrors()) {
-            List<String> errorMessages = result.getFieldErrors()
-                    .stream()
-                    .map(FieldError::getDefaultMessage)
-                    .toList();
-            return ApiResponse.<Boolean>builder()
-                    .code(HttpStatus.BAD_REQUEST.value())
-                    .message(errorMessages.toString())
-                    .result(false)
-                    .build();
-        }
-
         try {
-            List<StudentResponse> list = studentServices.getStudentList(request);
+            String token = authorizationHeader.substring(7);
+            List<StudentResponse> list = studentServices.getStudentList(token);
             return ApiResponse.<List<StudentResponse>>builder()
                     .code(HttpStatus.OK.value())
                     .result(list)
@@ -140,6 +116,7 @@ public class StudentController {
 
     @PutMapping("/update_student_detail")
     public ApiResponse<?> updateStudentDetail(
+            @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody @Valid UpdateStudentRequest request,
             BindingResult result
     ) {
@@ -156,7 +133,8 @@ public class StudentController {
         }
 
         try {
-            StudentResponse response = studentServices.updateStudent(request);
+            String token = authorizationHeader.substring(7);
+            StudentResponse response = studentServices.updateStudent(token, request);
             return ApiResponse.<StudentResponse>builder()
                     .code(HttpStatus.OK.value())
                     .result(response)
@@ -169,6 +147,7 @@ public class StudentController {
 
     @PatchMapping("/update_password")
     public ApiResponse<?> updatePassword(
+            @RequestHeader("Authorization") String authorizationHeader,
             @RequestBody @Valid UpdatePasswordRequest request,
             BindingResult result
     ) {
@@ -185,7 +164,8 @@ public class StudentController {
         }
 
         try {
-            Boolean status = studentServices.updatePassword(request);
+            String token = authorizationHeader.substring(7);
+            Boolean status = studentServices.updatePassword(token, request);
             return ApiResponse.<Boolean>builder()
                     .code(HttpStatus.OK.value())
                     .result(status)

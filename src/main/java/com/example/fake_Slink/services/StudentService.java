@@ -9,8 +9,8 @@ import java.util.List;
 public interface StudentService {
     Boolean addStudents(List<CreateStudentRequest> list) throws Exception;
     AuthenticationResponse authentication(AuthenticationRequest authenticationRequests) throws Exception;
-    StudentResponse getStudentDetail(IntrospectRequest introspectRequest) throws Exception;
-    List<StudentResponse> getStudentList(IntrospectRequest introspectRequest) throws Exception;
-    StudentResponse updateStudent(UpdateStudentRequest updateStudentRequest) throws Exception;
-    Boolean updatePassword(UpdatePasswordRequest updatePasswordRequest) throws Exception;
+    StudentResponse getStudentDetail(String token) throws Exception;
+    List<StudentResponse> getStudentList(String token) throws Exception;
+    StudentResponse updateStudent(String token, UpdateStudentRequest updateStudentRequest) throws Exception;
+    Boolean updatePassword(String token, UpdatePasswordRequest updatePasswordRequest) throws Exception;
 }

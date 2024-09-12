@@ -11,6 +11,5 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UpdatePasswordRequest {
-    IntrospectRequest introspectRequest;
     String password;
 }

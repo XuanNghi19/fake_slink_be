@@ -13,5 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CreateMajorRequest {
     String id;
+    String departmentId;
+    String idNum;
     String majorName;
 }

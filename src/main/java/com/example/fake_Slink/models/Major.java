@@ -17,12 +17,21 @@ public class Major {
     @Id
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
+    @Column(name = "id_num")
+    private String idNum;
+
     @Column(name = "major_name")
     private String majorName;
 
-    public static Major fromCreateMajorRequest(CreateMajorRequest request) {
+    public static Major fromCreateMajorRequest(CreateMajorRequest request, Department department) {
         return Major.builder()
                 .id(request.getId())
+                .department(department)
+                .idNum(request.getIdNum())
                 .majorName(request.getMajorName())
                 .build();
     }

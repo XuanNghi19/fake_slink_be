@@ -6,10 +6,7 @@ import com.example.fake_Slink.dtos.responses.AuthenticationResponse;
 import com.example.fake_Slink.dtos.responses.IntrospectResponse;
 import com.example.fake_Slink.dtos.responses.StudentResponse;
 import com.example.fake_Slink.enums.Role;
-import com.example.fake_Slink.models.DraftStudentNum;
-import com.example.fake_Slink.models.Major;
-import com.example.fake_Slink.models.Student;
-import com.example.fake_Slink.models.Teacher;
+import com.example.fake_Slink.models.*;
 import com.example.fake_Slink.repositories.*;
 import com.example.fake_Slink.services.StudentService;
 import com.nimbusds.jwt.SignedJWT;
@@ -39,6 +36,17 @@ public class StudentServiceImpl implements StudentService {
             Major major = majorRepositories.findById(x.getMajorId())
                     .orElseThrow(() -> new RuntimeException("Khong tim thay majorId: " + x.getMajorId()));
             DraftStudentNum draftStudentNum = draftStudentNumRepositories.findByCourseAndMajor(x.getCourse(), major);
+
+            if(draftStudentNum == null) {
+                DraftStudentNum newDraftStudentNum = DraftStudentNum.builder()
+                        .course(x.getCourse())
+                        .major(major)
+                        .studentNum(1)
+                        .build();
+                draftStudentNumRepositories.save(newDraftStudentNum);
+                draftStudentNum = draftStudentNumRepositories.findByCourseAndMajor(x.getCourse(), major);
+            }
+
             Integer trashNum = draftStudentNum.getStudentNum();
 
             if (trashNum < 10) {
@@ -49,7 +57,7 @@ public class StudentServiceImpl implements StudentService {
                 newNum = trashNum.toString();
             }
 
-            String newIdNum = "D" + x.getCourse() + x.getMajorId() + newNum;
+            String newIdNum = "D" + x.getCourse() + major.getIdNum() + newNum;
             if(studentRepositories.existsByIdNum(newIdNum)) {
                 throw new RuntimeException("idNum da ton tai");
             }
@@ -77,13 +85,11 @@ public class StudentServiceImpl implements StudentService {
         throw new Exception("Thong tin dang nhap khong chinh xac");
     }
     @Override
-    public StudentResponse getStudentDetail(IntrospectRequest introspectRequest) throws Exception {
-
-        IntrospectResponse introspectResponse = jwtUtils.introspect(introspectRequest);
+    public StudentResponse getStudentDetail(String token) throws Exception {
+        IntrospectResponse introspectResponse = jwtUtils.introspect(token);
         if(!introspectResponse.getValid()) {
             throw new RuntimeException("Token failed!");
         }
-        String token = introspectRequest.getToken().substring(7);
         SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Student student = studentRepositories.findByIdNum(idNum)
@@ -92,13 +98,12 @@ public class StudentServiceImpl implements StudentService {
         return StudentResponse.fromStudent(student);
     }
     @Override
-    public List<StudentResponse> getStudentList(IntrospectRequest introspectRequest) throws Exception {
-        IntrospectResponse introspectResponse = jwtUtils.introspect(introspectRequest);
+    public List<StudentResponse> getStudentList(String token) throws Exception {
+        IntrospectResponse introspectResponse = jwtUtils.introspect(token);
         if(!introspectResponse.getValid()) {
             throw new RuntimeException("Token failed!");
         }
 
-        String token = introspectRequest.getToken().substring(7);
         SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Teacher admin = teacherRepositories.findByIdNum(idNum)
@@ -113,14 +118,13 @@ public class StudentServiceImpl implements StudentService {
         }
     }
     @Override
-    public StudentResponse updateStudent(UpdateStudentRequest updateStudentRequest) throws Exception {
+    public StudentResponse updateStudent(String token, UpdateStudentRequest updateStudentRequest) throws Exception {
 
-        IntrospectResponse introspectResponse = jwtUtils.introspect(updateStudentRequest.getIntrospectRequest());
+        IntrospectResponse introspectResponse = jwtUtils.introspect(token);
         if(!introspectResponse.getValid()) {
             throw new RuntimeException("Token failed!");
         }
 
-        String token = updateStudentRequest.getIntrospectRequest().getToken().substring(7);
         SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Student student = studentRepositories.findByIdNum(idNum)
@@ -131,14 +135,13 @@ public class StudentServiceImpl implements StudentService {
         return StudentResponse.fromStudent(studentRepositories.save(student));
     }
     @Override
-    public Boolean updatePassword(UpdatePasswordRequest updatePasswordRequest) throws Exception {
+    public Boolean updatePassword(String token,UpdatePasswordRequest updatePasswordRequest) throws Exception {
 
-        IntrospectResponse introspectResponse = jwtUtils.introspect(updatePasswordRequest.getIntrospectRequest());
+        IntrospectResponse introspectResponse = jwtUtils.introspect(token);
         if(!introspectResponse.getValid()) {
             throw new RuntimeException("Token failed!");
         }
 
-        String token = updatePasswordRequest.getIntrospectRequest().getToken().substring(7);
         SignedJWT signedJWT = SignedJWT.parse(token);
         String idNum = signedJWT.getJWTClaimsSet().getSubject();
         Student student = studentRepositories.findByIdNum(idNum)
