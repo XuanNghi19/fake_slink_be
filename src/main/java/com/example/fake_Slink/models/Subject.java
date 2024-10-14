@@ -19,7 +19,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int subjectID;
 
-    @Column(name = "id_num")
+    @Column(name = "id_num", unique = true)
     private String idNum;
 
     @Column(name = "subjectName")
@@ -28,6 +28,7 @@ public class Subject {
     @Column(name = "credits")
     private int credits;
 
+    @Lob
     @Column(name = "describe")
     private String describe;
 

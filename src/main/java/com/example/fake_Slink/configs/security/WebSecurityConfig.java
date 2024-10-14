@@ -55,11 +55,18 @@ public class WebSecurityConfig {
                                    String.format("%s/students/get_student_list", apiPrefix),
                                    String.format("%s/subjects/add_subjects", apiPrefix),
                                    String.format("%s/departments/add_departments", apiPrefix),
-                                   String.format("%s/majors/add_majors", apiPrefix)
+                                   String.format("%s/majors/add_majors", apiPrefix),
+                                   String.format("%s/semester", apiPrefix),
+                                   String.format("%s/classSubject", apiPrefix),
+                                   String.format("%s/timeTables", apiPrefix),
+                                   String.format("%s/subject_registration", apiPrefix)
                            ).hasAnyRole(Role.ADMIN.toString())
                            .requestMatchers(
                                    HttpMethod.GET,
-                                   String.format("%s/students/student_detail", apiPrefix)
+                                   String.format("%s/students/student_detail", apiPrefix),
+                                   String.format("%s/semester", apiPrefix),
+                                   String.format("%s/classSubject", apiPrefix),
+                                   String.format("%s/timeTables", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
                            .requestMatchers(
                                    HttpMethod.PUT,
@@ -69,6 +76,11 @@ public class WebSecurityConfig {
                                    HttpMethod.PATCH,
                                    String.format("%s/students/update_password", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
+                           .requestMatchers(
+                                   HttpMethod.GET,
+                                   String.format("%s/semester", apiPrefix),
+                                   String.format("%s/classSubject", apiPrefix)
+                           ).hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString())
                            .anyRequest().authenticated();
                 });
         return httpSecurity.build();

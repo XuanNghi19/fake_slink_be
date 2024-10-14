@@ -1,5 +1,6 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.CreateSemesterRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +28,12 @@ public class Semester {
 
     @Column(name = "endDate")
     private Date endDate;
+
+    public static Semester fromCreateSemesterRequest(CreateSemesterRequest request) {
+        return Semester.builder()
+                .semesterName(request.getSemesterName())
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .build();
+    }
 }

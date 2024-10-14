@@ -25,7 +25,7 @@ public class Teacher implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "id_num")
+    @Column(name = "id_num", unique = true)
     private String idNum;
 
     @Column(name = "password")
