@@ -48,7 +48,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
             final String authorizationHeader = request.getHeader("Authorization");
             if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                filterChain.doFilter(request, response);
+                return;
             }
 
             final String token = authorizationHeader.substring(7);
@@ -63,7 +64,8 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            logger.error("Cannot set user authentication", e);
+            filterChain.doFilter(request, response);
         }
     }
 
