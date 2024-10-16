@@ -26,7 +26,7 @@ public class StudentResponse {
     String sex;
     String address;
     String major;
-
+    float gpa;
     public static StudentResponse fromStudent(Student student) {
         return StudentResponse.builder()
                 .course(student.getCourse())
@@ -40,6 +40,7 @@ public class StudentResponse {
                 .sex(student.getSex())
                 .address(student.getAddress())
                 .major(student.getMajor().getMajorName())
+                .gpa(student.getGpa())
                 .build();
     }
 }
