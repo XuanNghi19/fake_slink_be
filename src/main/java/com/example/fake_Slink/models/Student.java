@@ -68,6 +68,9 @@ public class Student implements UserDetails {
     @JoinColumn(name = "major_id")
     private Major major;
 
+    @Column(name = "gpa")
+    private float gpa;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -119,6 +122,7 @@ public class Student implements UserDetails {
                 .sex(request.getSex())
                 .address(request.getAddress())
                 .major(major)
+                .gpa(0f)
                 .role(Role.STUDENT)
                 .build();
     }
@@ -141,6 +145,7 @@ public class Student implements UserDetails {
                 .sex(request.getSex())
                 .address(request.getAddress())
                 .major(student.getMajor())
+                .gpa(student.getGpa())
                 .role(Role.STUDENT)
                 .build();
     }
