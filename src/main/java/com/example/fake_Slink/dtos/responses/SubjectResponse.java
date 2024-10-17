@@ -24,6 +24,7 @@ public class SubjectResponse {
     public static SubjectResponse fromSubject(Subject subject) {
         return SubjectResponse.builder()
                 .subjectID(subject.getSubjectID())
+                .idNum(subject.getIdNum())
                 .subjectName(subject.getSubjectName())
                 .credits(subject.getCredits())
                 .describe(subject.getDescribe())
