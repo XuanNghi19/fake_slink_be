@@ -51,6 +51,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             }
 
+            assert authorizationHeader != null;
             final String token = authorizationHeader.substring(7);
             final String idNum = SignedJWT.parse(token).getJWTClaimsSet().getSubject();
 

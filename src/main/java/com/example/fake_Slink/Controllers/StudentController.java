@@ -175,4 +175,35 @@ public class StudentController {
             throw new RuntimeException(ex);
         }
     }
+
+    @PatchMapping("/upload_avatar_url")
+    public ApiResponse<?> uploadAvatarUrl(
+            @RequestHeader("Authorization") String authorizationHeader,
+            @RequestBody @Valid UploadAvatarRequest request,
+            BindingResult result
+    ) {
+        if(result.hasErrors()) {
+            List<String> errorMessages = result.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .toList();
+            return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message(errorMessages.toString())
+                    .result(false)
+                    .build();
+        }
+
+        try {
+            String token = authorizationHeader.substring(7);
+            Boolean status = studentServices.uploadAvatarUrl(request, token);
+            return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.OK.value())
+                    .result(status)
+                    .message(HttpStatus.OK.toString())
+                    .build();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }

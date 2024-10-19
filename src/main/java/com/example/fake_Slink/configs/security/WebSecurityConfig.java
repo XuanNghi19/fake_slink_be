@@ -74,7 +74,8 @@ public class WebSecurityConfig {
                            ).hasAnyRole(Role.STUDENT.toString())
                            .requestMatchers(
                                    HttpMethod.PATCH,
-                                   String.format("%s/students/update_password", apiPrefix)
+                                   String.format("%s/students/update_password", apiPrefix),
+                                   String.format("%s/students/upload_avatar_url", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
                            .requestMatchers(
                                    HttpMethod.GET,

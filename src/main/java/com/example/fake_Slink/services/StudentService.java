@@ -13,4 +13,5 @@ public interface StudentService {
     List<StudentResponse> getStudentList(String token) throws Exception;
     StudentResponse updateStudent(String token, UpdateStudentRequest updateStudentRequest) throws Exception;
     Boolean updatePassword(String token, UpdatePasswordRequest updatePasswordRequest) throws Exception;
+    Boolean uploadAvatarUrl(UploadAvatarRequest request, String token) throws Exception;
 }
