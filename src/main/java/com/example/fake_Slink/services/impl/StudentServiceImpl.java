@@ -154,4 +154,21 @@ public class StudentServiceImpl implements StudentService {
         studentRepositories.save(student);
         return true;
     }
+
+    @Override
+    public Boolean uploadAvatarUrl(UploadAvatarRequest request, String token) throws Exception {
+        IntrospectResponse introspectResponse = jwtUtils.introspect(token);
+        if(!introspectResponse.getValid()) {
+            throw new RuntimeException("Token failed!");
+        }
+
+        SignedJWT signedJWT = SignedJWT.parse(token);
+        String idNum = signedJWT.getJWTClaimsSet().getSubject();
+
+        Student student = studentRepositories.findByIdNum(idNum)
+                .orElseThrow(() -> new Exception("Khong tim thay sinh vien voi idNum: " + idNum));
+        student.setAvatarUrl(request.getAvatarUrl());
+        studentRepositories.save(student);
+        return true;
+    }
 }

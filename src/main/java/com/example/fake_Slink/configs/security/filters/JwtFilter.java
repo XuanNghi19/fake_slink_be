@@ -52,6 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 return;
             }
 
+            assert authorizationHeader != null;
             final String token = authorizationHeader.substring(7);
             final String idNum = SignedJWT.parse(token).getJWTClaimsSet().getSubject();
 

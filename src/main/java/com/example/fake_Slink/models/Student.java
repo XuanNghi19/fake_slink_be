@@ -71,6 +71,9 @@ public class Student implements UserDetails {
     @Column(name = "gpa")
     private float gpa;
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
