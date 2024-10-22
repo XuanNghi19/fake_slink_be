@@ -135,7 +135,7 @@ public class StudentServiceImpl implements StudentService {
         return StudentResponse.fromStudent(studentRepositories.save(student));
     }
     @Override
-    public Boolean updatePassword(String token,UpdatePasswordRequest updatePasswordRequest) throws Exception {
+    public Boolean updatePassword(String token, UpdatePasswordRequest updatePasswordRequest) throws Exception {
 
         IntrospectResponse introspectResponse = jwtUtils.introspect(token);
         if(!introspectResponse.getValid()) {
@@ -147,12 +147,18 @@ public class StudentServiceImpl implements StudentService {
         Student student = studentRepositories.findByIdNum(idNum)
                 .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idNum: " + idNum));
 
-        String encodePassword = passwordEncoder.encode(updatePasswordRequest.getPassword());
+        if(passwordEncoder.matches(updatePasswordRequest.getOldPassword(), student.getPassword())) {
 
-        student.setPassword(encodePassword);
+            String encodePassword = passwordEncoder.encode(updatePasswordRequest.getNewPassword());
 
-        studentRepositories.save(student);
-        return true;
+            student.setPassword(encodePassword);
+
+            studentRepositories.save(student);
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
