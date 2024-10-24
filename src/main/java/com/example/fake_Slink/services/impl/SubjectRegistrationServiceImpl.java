@@ -2,9 +2,11 @@ package com.example.fake_Slink.services.impl;
 
 import com.example.fake_Slink.dtos.requests.CreateSubjectRegistrationRequest;
 import com.example.fake_Slink.models.ClassSubject;
+import com.example.fake_Slink.models.Grade;
 import com.example.fake_Slink.models.Student;
 import com.example.fake_Slink.models.SubjectRegistration;
 import com.example.fake_Slink.repositories.ClassSubjectRepository;
+import com.example.fake_Slink.repositories.GradeRepository;
 import com.example.fake_Slink.repositories.StudentRepository;
 import com.example.fake_Slink.repositories.SubjectRegistrationRepository;
 import com.example.fake_Slink.services.SubjectRegistrationService;
@@ -19,6 +21,7 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
     private final SubjectRegistrationRepository subjectRegistrationRepository;
     private final StudentRepository studentRepository;
     private final ClassSubjectRepository classSubjectRepository;
+    private final GradeRepository gradeRepository;
 
     @Override
     public boolean createSubjectRegistration(List<CreateSubjectRegistrationRequest> list) throws Exception {
@@ -29,6 +32,10 @@ public class SubjectRegistrationServiceImpl implements SubjectRegistrationServic
             ClassSubject classSubject = classSubjectRepository.findById(x.getClassSubjectId()).orElseThrow(
                     () -> new Exception("Khong tim thay classSubject voi classSubjectId: " + x.getClassSubjectId())
             );
+
+            Grade grade = Grade.fromSubjectRegistration(student, classSubject);
+            gradeRepository.save(grade);
+
             SubjectRegistration subjectRegistration = SubjectRegistration.fromCreateSubjectRegistrationRequest(student, classSubject);
             subjectRegistrationRepository.save(subjectRegistration);
         }

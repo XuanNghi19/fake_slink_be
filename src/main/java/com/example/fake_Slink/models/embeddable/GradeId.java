@@ -1,11 +1,17 @@
 package com.example.fake_Slink.models.embeddable;
 
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class GradeId implements Serializable {
     private int studentID;
     private int classSubjectID;
@@ -23,5 +29,15 @@ public class GradeId implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(studentID, classSubjectID);
+    }
+
+    static public GradeId fromCreateClassSubjectRequest(
+            int studentID,
+            int classSubjectID
+    ) {
+        return GradeId.builder()
+                .studentID(studentID)
+                .classSubjectID(classSubjectID)
+                .build();
     }
 }

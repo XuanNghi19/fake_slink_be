@@ -66,12 +66,17 @@ public class WebSecurityConfig {
                                    String.format("%s/students/student_detail", apiPrefix),
                                    String.format("%s/semester", apiPrefix),
                                    String.format("%s/classSubject", apiPrefix),
-                                   String.format("%s/timeTables", apiPrefix)
+                                   String.format("%s/timeTables", apiPrefix),
+                                   String.format("%s/grade", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
                            .requestMatchers(
                                    HttpMethod.PUT,
                                    String.format("%s/students/update_student_detail", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
+                           .requestMatchers(
+                                   HttpMethod.PUT,
+                                   String.format("%s/grade", apiPrefix)
+                           ).hasAnyRole(Role.ADMIN.toString(), Role.TEACHER.toString())
                            .requestMatchers(
                                    HttpMethod.PATCH,
                                    String.format("%s/students/update_password", apiPrefix),

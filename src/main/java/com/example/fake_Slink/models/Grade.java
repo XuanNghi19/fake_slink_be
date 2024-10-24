@@ -1,5 +1,6 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.UpdateGradeRequest;
 import com.example.fake_Slink.models.embeddable.GradeId;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,4 +48,32 @@ public class Grade {
 
     @Column(name = "status")
     private String status;
+
+    static public Grade fromSubjectRegistration(Student student, ClassSubject classSubject) {
+        return Grade.builder()
+                .gradeId(GradeId.fromCreateClassSubjectRequest(student.getId(), classSubject.getClassSubjectID()))
+                .student(student)
+                .classSubject(classSubject)
+                .status("Chưa hoàn thành môn học")
+                .build();
+    }
+
+    static public Grade fromUpdateGrade(
+            UpdateGradeRequest updateGradeRequest,
+            Grade grade,
+            float diemTK
+    ) {
+        return Grade.builder()
+                .gradeId(grade.gradeId)
+                .student(grade.student)
+                .classSubject(grade.classSubject)
+                .diemCC(updateGradeRequest.getDiemCC())
+                .diemBT(updateGradeRequest.getDiemBT())
+                .diemTH(updateGradeRequest.getDiemTH())
+                .diemKT(updateGradeRequest.getDiemKT())
+                .diemCK(updateGradeRequest.getDiemCK())
+                .diemTK(diemTK)
+                .status(updateGradeRequest.getStatus())
+                .build();
+    }
 }
