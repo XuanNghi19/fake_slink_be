@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,6 +47,13 @@ public class TimeTableServiceImpl implements TimeTableService {
                 () -> new Exception("Khong tim thay student voi idNum: " + studentIDNum)
         );
         List<SubjectRegistration> subjectRegistrationList = subjectRegistrationRepository.findByStudent(student);
+        Date today = new Date();
+        for(var x : subjectRegistrationList) {
+            if(x.getClassSubject().getSemester().getEndDate().before(today)){
+                subjectRegistrationList.remove(x);
+            }
+        }
+
 
         List<TimeTableResponse> timeTableResponsesList = new ArrayList<>();
         for (var x : subjectRegistrationList) {
