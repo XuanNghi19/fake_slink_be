@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface TimeTableRepository extends JpaRepository<TimeTable, Integer> {
     List<TimeTable> findByClassSubject(ClassSubject classSubject);
+
+
 }

@@ -47,26 +47,18 @@ public class TimeTableServiceImpl implements TimeTableService {
         Student student = studentRepository.findByIdNum(studentIDNum).orElseThrow(
                 () -> new Exception("Khong tim thay student voi idNum: " + studentIDNum)
         );
-        List<SubjectRegistration> subjectRegistrationList = subjectRegistrationRepository.findByStudent(student);
         Date today = new Date();
-        Iterator<SubjectRegistration> iterator = subjectRegistrationList.iterator();
-        while (iterator.hasNext()) {
-            SubjectRegistration x = iterator.next();
-            if (x.getClassSubject().getSemester().getEndDate().before(today)) {
-                iterator.remove();
-            }
-        }
+        List<SubjectRegistration> subjectRegistrationList = subjectRegistrationRepository
+                .findByStudentAndClassSubjectSemesterEndDate(student, today);
 
 
-        List<TimeTableResponse> timeTableResponsesList = new ArrayList<>();
-        for (var x : subjectRegistrationList) {
-            List<TimeTable> timeTableListForEachClassSubject = timeTableRepository.findByClassSubject(x.getClassSubject());
-            timeTableResponsesList.addAll(timeTableListForEachClassSubject
-                    .stream()
-                    .map(timeTable -> TimeTableResponse.fromTimeTable(timeTable, x.getClassSubject()))
-                    .toList()
-            );
-        }
+        List<TimeTableResponse> timeTableResponsesList = subjectRegistrationList
+                .stream()
+                .flatMap(subjectRegistration ->
+                        timeTableRepository.findByClassSubject(subjectRegistration.getClassSubject())
+                                .stream()
+                                .map(timeTable -> TimeTableResponse.fromTimeTable(timeTable, subjectRegistration.getClassSubject()))
+                ).toList();
         return timeTableResponsesList;
     }
 
