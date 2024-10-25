@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface SubjectRegistrationRepository extends JpaRepository<SubjectRegistration, Integer> {
     List<SubjectRegistration> findByStudent(Student student);
-    List<SubjectRegistration> findByStudentAndClassSubjectSemesterEndDateBefore(Student student, Date today);
+    List<SubjectRegistration> findByStudentAndClassSubjectSemesterEndDateAfter(Student student, Date today);
 }

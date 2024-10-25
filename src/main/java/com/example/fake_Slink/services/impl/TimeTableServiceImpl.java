@@ -49,7 +49,7 @@ public class TimeTableServiceImpl implements TimeTableService {
         );
         Date today = new Date();
         List<SubjectRegistration> subjectRegistrationList = subjectRegistrationRepository
-                .findByStudentAndClassSubjectSemesterEndDateBefore(student, today);
+                .findByStudentAndClassSubjectSemesterEndDateAfter(student, today);
 
 
         List<TimeTableResponse> timeTableResponsesList = subjectRegistrationList
