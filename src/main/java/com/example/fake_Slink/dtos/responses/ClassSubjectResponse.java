@@ -45,6 +45,7 @@ public class ClassSubjectResponse {
     public static ClassSubjectResponse fromClassSubject(ClassSubject classSubject) {
         return ClassSubjectResponse.builder()
                 .classSubjectID(classSubject.getClassSubjectID())
+                .semesterResponse(SemesterResponse.fromSemester(classSubject.getSemester()))
                 .teacherResponse(TeacherResponse.fromTeacher(classSubject.getTeacher()))
                 .subjectResponse(SubjectResponse.fromSubject(classSubject.getSubject()))
                 .location(classSubject.getLocation())
