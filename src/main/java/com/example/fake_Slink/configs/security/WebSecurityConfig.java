@@ -66,6 +66,8 @@ public class WebSecurityConfig {
                                    String.format("%s/students/student_detail", apiPrefix),
                                    String.format("%s/semester", apiPrefix),
                                    String.format("%s/classSubject", apiPrefix),
+                                   String.format("%s/classSubject/credit_class", apiPrefix),
+                                   String.format("%s/classSubject/get_students_in_credit_class", apiPrefix),
                                    String.format("%s/timeTables", apiPrefix),
                                    String.format("%s/grade", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())

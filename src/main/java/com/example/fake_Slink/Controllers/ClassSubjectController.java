@@ -1,9 +1,7 @@
 package com.example.fake_Slink.Controllers;
 
 import com.example.fake_Slink.dtos.requests.CreateClassSubjectRequest;
-import com.example.fake_Slink.dtos.responses.ApiResponse;
-import com.example.fake_Slink.dtos.responses.ClassSubjectResponse;
-import com.example.fake_Slink.dtos.responses.SemesterResponse;
+import com.example.fake_Slink.dtos.responses.*;
 import com.example.fake_Slink.services.ClassSubjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +55,38 @@ public class ClassSubjectController {
         try {
             ClassSubjectResponse response = classSubjectService.getClassSubject(classSubjectID);
             return ApiResponse.<ClassSubjectResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .result(response)
+                    .message(HttpStatus.OK.toString())
+                    .build();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @GetMapping("/credit_class/{student_id_num}")
+    public ApiResponse<?> getCreditClass(
+            @PathVariable("student_id_num") String studentIdNum
+    ) {
+        try {
+            CreditClassResponse response = classSubjectService.getCreditClass(studentIdNum);
+            return ApiResponse.<CreditClassResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .result(response)
+                    .message(HttpStatus.OK.toString())
+                    .build();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @GetMapping("/get_students_in_credit_class/{classSubjectID}")
+    public ApiResponse<?> getCreditClass(
+            @PathVariable("classSubjectID") int classSubjectID
+    ) {
+        try {
+            List<StudentResponse> response = classSubjectService.getStudentInCreditClass(classSubjectID);
+            return ApiResponse.<List<StudentResponse>>builder()
                     .code(HttpStatus.OK.value())
                     .result(response)
                     .message(HttpStatus.OK.toString())
