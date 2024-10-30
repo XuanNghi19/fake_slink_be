@@ -69,21 +69,11 @@ public class GradeServiceImpl implements GradeService {
                 .map(GradeResponse::fromGrade)
                 .toList();
 
-        List<SemesterResponse> semesterResponseList = new ArrayList<>();
-
-        for(var x : gradeResponseList) {
-            ClassSubjectResponse classSubjectResponse = x.getClassSubjectResponse();
-            if(!semesterResponseList.contains(classSubjectResponse.getSemesterResponse())) {
-                semesterResponseList.add(classSubjectResponse.getSemesterResponse());
-            }
-        }
-
-        Collections.sort(semesterResponseList, new Comparator<SemesterResponse>() {
-            @Override
-            public int compare(SemesterResponse o1, SemesterResponse o2) {
-                return o2.getStartDate().compareTo(o1.getStartDate());
-            }
-        });
+        List<SemesterResponse> semesterResponseList = gradeResponseList.stream()
+                .map(gradeResponse -> gradeResponse.getClassSubjectResponse().getSemesterResponse())
+                .distinct()
+                .sorted(Comparator.comparing(SemesterResponse::getStartDate).reversed())
+                .toList();
 
         return new LearningOutcomesResponse(semesterResponseList, gradeResponseList);
     }
