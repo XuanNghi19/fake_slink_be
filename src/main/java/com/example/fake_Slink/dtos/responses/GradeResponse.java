@@ -34,6 +34,7 @@ public class GradeResponse {
                 .diemCC(grade.getDiemCC())
                 .diemBT(grade.getDiemBT())
                 .diemTH(grade.getDiemTH())
+                .diemKT(grade.getDiemKT())
                 .diemCK(grade.getDiemCK())
                 .diemTK(grade.getDiemTK())
                 .status(grade.getStatus())
