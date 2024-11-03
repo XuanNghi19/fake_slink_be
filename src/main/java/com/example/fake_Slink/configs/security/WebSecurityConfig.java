@@ -59,7 +59,8 @@ public class WebSecurityConfig {
                                    String.format("%s/semester", apiPrefix),
                                    String.format("%s/classSubject", apiPrefix),
                                    String.format("%s/timeTables", apiPrefix),
-                                   String.format("%s/subject_registration", apiPrefix)
+                                   String.format("%s/subject_registration", apiPrefix),
+                                   String.format("%s/examSchedule", apiPrefix)
                            ).hasAnyRole(Role.ADMIN.toString())
                            .requestMatchers(
                                    HttpMethod.GET,
@@ -69,7 +70,13 @@ public class WebSecurityConfig {
                                    String.format("%s/classSubject/credit_class", apiPrefix),
                                    String.format("%s/classSubject/get_students_in_credit_class", apiPrefix),
                                    String.format("%s/timeTables", apiPrefix),
-                                   String.format("%s/grade", apiPrefix)
+                                   String.format("%s/grade", apiPrefix),
+                                   String.format("%s/reviewForm/by_student", apiPrefix),
+                                   String.format("%s/examSchedule", apiPrefix)
+                           ).hasAnyRole(Role.STUDENT.toString())
+                           .requestMatchers(
+                                   HttpMethod.POST,
+                                   String.format("%s/reviewForm", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
                            .requestMatchers(
                                    HttpMethod.PUT,
@@ -84,6 +91,10 @@ public class WebSecurityConfig {
                                    String.format("%s/students/update_password", apiPrefix),
                                    String.format("%s/students/upload_avatar_url", apiPrefix)
                            ).hasAnyRole(Role.STUDENT.toString())
+                           .requestMatchers(
+                                   HttpMethod.PATCH,
+                                   String.format("%s/reviewForm", apiPrefix)
+                           ).hasAnyRole(Role.TEACHER.toString(), Role.ADMIN.toString())
                            .requestMatchers(
                                    HttpMethod.GET,
                                    String.format("%s/semester", apiPrefix),
