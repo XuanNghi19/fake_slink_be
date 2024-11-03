@@ -1,5 +1,6 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.CreateExamScheduleRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,12 +30,31 @@ public class ExamSchedule {
     @Column(name = "location")
     private String location;
 
+    @Column(name = "number_of_student")
+    private int numberOfStudent;
+
     @Column(name = "start_time")
     private String startTime;
 
-    @Column(name = "end_time")
-    private String endTime;
-
     @Column(name = "minute")
     private String minute;
+
+    @Column(name = "format")
+    private String format;
+
+    static public ExamSchedule fromCreateExamScheduleRequest(
+            CreateExamScheduleRequest request,
+            ClassSubject classSubject,
+            int numberOfStudent
+    ) {
+        return ExamSchedule.builder()
+                .classSubject(classSubject)
+                .dateOfEvent(request.getDateOfEvent())
+                .location(request.getLocation())
+                .numberOfStudent(numberOfStudent)
+                .startTime(request.getStartTime())
+                .minute(request.getMinute())
+                .format(request.getFormat())
+                .build();
+    }
 }

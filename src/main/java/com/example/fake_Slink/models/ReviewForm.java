@@ -1,5 +1,7 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.CreateReviewFormRequest;
+import com.example.fake_Slink.enums.ReviewFormStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,16 +24,30 @@ public class ReviewForm {
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "subjectID")
-    private Subject subject;
+    @JoinColumn(name = "class_subject_id")
+    private ClassSubject classSubject;
 
+    @Lob
     @Column(name = "content")
     private String content;
 
     @Column(name = "status")
-    private String status;
+    private ReviewFormStatus status;
 
-    @Column(name = "response")
-    private String response;
+    @Column(name = "attached_file")
+    private String attachedFile;
 
+    static public ReviewForm fromCreateReviewFormRequest(
+            CreateReviewFormRequest request,
+            Student student,
+            ClassSubject classSubject
+    ) {
+        return ReviewForm.builder()
+                .student(student)
+                .classSubject(classSubject)
+                .content(request.getContent())
+                .status(ReviewFormStatus.SUBMITTED)
+                .attachedFile(request.getAttachedFile())
+                .build();
+    }
 }
