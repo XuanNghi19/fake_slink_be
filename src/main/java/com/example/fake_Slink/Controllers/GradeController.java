@@ -2,6 +2,7 @@ package com.example.fake_Slink.Controllers;
 
 import com.example.fake_Slink.dtos.requests.UpdateGradeRequest;
 import com.example.fake_Slink.dtos.responses.ApiResponse;
+import com.example.fake_Slink.dtos.responses.GradeResponse;
 import com.example.fake_Slink.dtos.responses.LearningOutcomesResponse;
 import com.example.fake_Slink.dtos.responses.SemesterResponse;
 import com.example.fake_Slink.services.GradeService;
@@ -60,6 +61,22 @@ public class GradeController {
             return ApiResponse.<LearningOutcomesResponse>builder()
                     .code(HttpStatus.OK.value())
                     .result(learningOutcomesResponse)
+                    .message(HttpStatus.OK.toString())
+                    .build();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @GetMapping("/appeals/{id_num}")
+    public ApiResponse<List<GradeResponse>> getGradeAppealsList(
+            @PathVariable("id_num") String idNum
+    ) {
+        try {
+            List<GradeResponse> gradeResponseList = gradeService.getGradeAppealsList(idNum);
+            return ApiResponse.<List<GradeResponse>>builder()
+                    .code(HttpStatus.OK.value())
+                    .result(gradeResponseList)
                     .message(HttpStatus.OK.toString())
                     .build();
         } catch (Exception ex) {

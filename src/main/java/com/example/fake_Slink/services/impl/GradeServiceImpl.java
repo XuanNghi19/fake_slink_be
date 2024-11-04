@@ -81,4 +81,16 @@ public class GradeServiceImpl implements GradeService {
 
         return new LearningOutcomesResponse(semesterResponseList, gradeResponseList);
     }
+
+    @Override
+    public List<GradeResponse> getGradeAppealsList(String idNum) throws Exception {
+        Student student = studentRepository.findByIdNum(idNum)
+                .orElseThrow(() -> new Exception("Khong tim thay sinh vien voi idNum: " + idNum));
+
+        List<GradeResponse> gradeAppealsList = gradeRepository.findByStudentAndAppealsDatelineAfterToday(student)
+                .stream()
+                .map(GradeResponse::fromGrade)
+                .toList();
+        return gradeAppealsList;
+    }
 }
