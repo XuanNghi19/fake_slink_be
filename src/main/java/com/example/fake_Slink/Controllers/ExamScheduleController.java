@@ -22,7 +22,7 @@ public class ExamScheduleController {
     private final ExamScheduleService examScheduleService;
 
     @PostMapping
-    public ApiResponse<Boolean> createReviewForm(
+    public ApiResponse<Boolean> createExamSchedule(
             @RequestBody @Valid List<CreateExamScheduleRequest> requests,
             BindingResult result
     ) {
@@ -52,7 +52,7 @@ public class ExamScheduleController {
     }
 
     @GetMapping("/{student_id_num}")
-    public ApiResponse<ViewExamScheduleResponse> getAllReviewFormByStudent(
+    public ApiResponse<ViewExamScheduleResponse> getAllExamScheduleByStudent(
             @PathVariable("student_id_num") String studentIdNum
     ) {
         try {
