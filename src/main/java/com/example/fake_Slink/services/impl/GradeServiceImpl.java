@@ -35,7 +35,7 @@ public class GradeServiceImpl implements GradeService {
                     .orElseThrow(() -> new Exception("Khong tim thay sinh vien voi gradeId: " + gradeId));
 
             float diemTK = 0f;
-
+            Date appealsDateLine = null;
             if(
                     x.getDiemCC() != 0f
                     && x.getDiemBT() != 0f
@@ -50,9 +50,13 @@ public class GradeServiceImpl implements GradeService {
                         + (x.getDiemTH()*classSubject.getPercentDiemTH() / 100)
                         + (x.getDiemCK()*classSubject.getPercentDiemCK() / 100)
                 );
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DAY_OF_YEAR, 15);
+                appealsDateLine = calendar.getTime();
             }
 
-            grade = Grade.fromUpdateGrade(x, grade, diemTK);
+            grade = Grade.fromUpdateGrade(x, grade, diemTK, appealsDateLine);
             gradeRepository.save(grade);
         }
 
