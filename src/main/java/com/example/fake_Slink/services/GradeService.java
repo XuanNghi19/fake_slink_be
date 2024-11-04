@@ -9,4 +9,5 @@ import java.util.List;
 public interface GradeService {
     Boolean updateGradeFromSubjectClass(List<UpdateGradeRequest> list) throws Exception;
     LearningOutcomesResponse getAllGradeFromStudent(String idNum) throws Exception;
+    List<GradeResponse> getGradeAppealsList(String idNum) throws Exception;
 }
