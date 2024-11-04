@@ -6,6 +6,8 @@ import com.example.fake_Slink.models.Student;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,6 +30,8 @@ public class GradeResponse {
 
     String status;
 
+    Date appealsDateline;
+
     static public GradeResponse fromGrade(Grade grade) {
         return GradeResponse.builder()
                 .classSubjectResponse(ClassSubjectResponse.fromClassSubject(grade.getClassSubject()))
@@ -38,6 +42,7 @@ public class GradeResponse {
                 .diemCK(grade.getDiemCK())
                 .diemTK(grade.getDiemTK())
                 .status(grade.getStatus())
+                .appealsDateline(grade.getAppealsDateline())
                 .build();
     }
 }

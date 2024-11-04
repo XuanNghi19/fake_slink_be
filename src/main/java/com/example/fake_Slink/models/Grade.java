@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "grade")
 @Data
@@ -49,6 +51,9 @@ public class Grade {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "appeals_date_line")
+    private Date appealsDateline;
+
     static public Grade fromSubjectRegistration(Student student, ClassSubject classSubject) {
         return Grade.builder()
                 .gradeId(GradeId.fromCreateClassSubjectRequest(student.getId(), classSubject.getClassSubjectID()))
@@ -61,7 +66,8 @@ public class Grade {
     static public Grade fromUpdateGrade(
             UpdateGradeRequest updateGradeRequest,
             Grade grade,
-            float diemTK
+            float diemTK,
+            Date appealsDateLine
     ) {
         return Grade.builder()
                 .gradeId(grade.gradeId)
@@ -74,6 +80,7 @@ public class Grade {
                 .diemCK(updateGradeRequest.getDiemCK())
                 .diemTK(diemTK)
                 .status(updateGradeRequest.getStatus())
+                .appealsDateline(appealsDateLine)
                 .build();
     }
 }
