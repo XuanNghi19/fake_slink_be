@@ -22,23 +22,21 @@ import jakarta.annotation.PostConstruct;
 @Slf4j
 @Service
 public class FCMServiceImpl implements FCMService {
-    @Value("${app.firebase-configuration-file}")
-    private String firebaseConfigPath;
-
-    private FirebaseApp firebaseApp;
 
     @PostConstruct
     public void initialize() {
+        String firebaseConfigPath = System.getenv("FIREBASE_CONFIG_JSON");
         try {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials
                             .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream()))
                     .build();
 
+            FirebaseApp firebaseApp;
             if(FirebaseApp.getApps().isEmpty()) {
-                this.firebaseApp = FirebaseApp.initializeApp(options);
+                firebaseApp = FirebaseApp.initializeApp(options);
             } else {
-                this.firebaseApp = FirebaseApp.getInstance();
+                firebaseApp = FirebaseApp.getInstance();
             }
         } catch (IOException e) {
             log.error("Create firebase error: " + e.getMessage());
