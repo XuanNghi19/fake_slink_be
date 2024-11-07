@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### Firebase Config ###
-./fakeslink-89c91-firebase-adminsdk-bh34e-996a2ab4ff.json
+src/main/resources/fakeslink-89c91-firebase-adminsdk-bh34e-996a2ab4ff.json
