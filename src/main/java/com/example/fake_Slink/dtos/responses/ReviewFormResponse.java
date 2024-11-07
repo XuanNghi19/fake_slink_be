@@ -11,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ReviewFormResponse {
+    int classSubjectId;
+
     String subjectName;
 
     int credits;
@@ -19,6 +21,7 @@ public class ReviewFormResponse {
 
     static public ReviewFormResponse fromReviewForm(ReviewForm reviewForm) {
         return ReviewFormResponse.builder()
+                .classSubjectId(reviewForm.getClassSubject().getClassSubjectID())
                 .subjectName(reviewForm.getClassSubject().getSubject().getSubjectName())
                 .credits(reviewForm.getClassSubject().getSubject().getCredits())
                 .status(reviewForm.getStatus())

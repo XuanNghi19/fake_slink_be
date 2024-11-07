@@ -1,5 +1,6 @@
 package com.example.fake_Slink.services.impl;
 
+import com.example.fake_Slink.dtos.requests.GradeNotificationRequest;
 import com.example.fake_Slink.dtos.requests.UpdateGradeRequest;
 import com.example.fake_Slink.dtos.responses.ClassSubjectResponse;
 import com.example.fake_Slink.dtos.responses.GradeResponse;
@@ -8,9 +9,12 @@ import com.example.fake_Slink.dtos.responses.SemesterResponse;
 import com.example.fake_Slink.models.ClassSubject;
 import com.example.fake_Slink.models.Grade;
 import com.example.fake_Slink.models.Student;
+import com.example.fake_Slink.models.StudentDevice;
 import com.example.fake_Slink.models.embeddable.GradeId;
 import com.example.fake_Slink.repositories.GradeRepository;
+import com.example.fake_Slink.repositories.StudentDeviceRepository;
 import com.example.fake_Slink.repositories.StudentRepository;
+import com.example.fake_Slink.services.FCMService;
 import com.example.fake_Slink.services.GradeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,8 @@ public class GradeServiceImpl implements GradeService {
 
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
+    private final StudentDeviceRepository studentDeviceRepository;
+    private final FCMService fcmService;
 
     @Override
     public Boolean updateGradeFromSubjectClass(List<UpdateGradeRequest> list) throws Exception {
@@ -58,6 +64,16 @@ public class GradeServiceImpl implements GradeService {
 
             grade = Grade.fromUpdateGrade(x, grade, diemTK, appealsDateLine);
             gradeRepository.save(grade);
+
+            GradeNotificationRequest notificationRequest = GradeNotificationRequest.fromGradeResponse(
+                    GradeResponse.fromGrade(grade)
+            );
+            List<StudentDevice> deviceList = studentDeviceRepository.findByStudentId(student.getId());
+
+            for(var device : deviceList) {
+                notificationRequest.setFcmToken(device.getFcmToken());
+                fcmService.sendGradedNotification(notificationRequest);
+            }
         }
 
         return true;
