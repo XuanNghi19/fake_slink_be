@@ -1,16 +1,24 @@
 package com.example.fake_Slink.services.impl;
 
 import com.example.fake_Slink.dtos.requests.CreateReviewFormRequest;
+import com.example.fake_Slink.dtos.requests.GradeNotificationRequest;
+import com.example.fake_Slink.dtos.requests.ReviewFormNotificationRequest;
 import com.example.fake_Slink.dtos.requests.UpdateReviewFormStatusRequest;
+import com.example.fake_Slink.dtos.responses.GradeResponse;
 import com.example.fake_Slink.dtos.responses.ReviewFormResponse;
+import com.example.fake_Slink.dtos.responses.SubjectResponse;
 import com.example.fake_Slink.enums.ReviewFormStatus;
 import com.example.fake_Slink.models.ClassSubject;
 import com.example.fake_Slink.models.ReviewForm;
 import com.example.fake_Slink.models.Student;
+import com.example.fake_Slink.models.StudentDevice;
 import com.example.fake_Slink.repositories.ClassSubjectRepository;
 import com.example.fake_Slink.repositories.ReviewFormRepository;
+import com.example.fake_Slink.repositories.StudentDeviceRepository;
 import com.example.fake_Slink.repositories.StudentRepository;
+import com.example.fake_Slink.services.FCMService;
 import com.example.fake_Slink.services.ReviewFormService;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +32,8 @@ public class ReviewFormServiceImpl implements ReviewFormService {
     private final StudentRepository studentRepository;
     private final ReviewFormRepository reviewFormRepository;
     private final ClassSubjectRepository classSubjectRepository;
+    private final StudentDeviceRepository studentDeviceRepository;
+    private final FCMService fcmService;
 
     @Override
     public boolean createReviewForm(CreateReviewFormRequest request) {
@@ -59,7 +69,7 @@ public class ReviewFormServiceImpl implements ReviewFormService {
     }
 
     @Override
-    public boolean updateStatus(UpdateReviewFormStatusRequest request) {
+    public boolean updateStatus(UpdateReviewFormStatusRequest request) throws FirebaseMessagingException {
         ReviewForm reviewForm = new ReviewForm();
         try {
             reviewForm = reviewFormRepository.findById(request.getReviewFormID())
@@ -72,6 +82,16 @@ public class ReviewFormServiceImpl implements ReviewFormService {
         reviewForm.setStatus(request.getStatus());
         reviewFormRepository.save(reviewForm);
 
+        ReviewFormNotificationRequest notificationRequest = ReviewFormNotificationRequest.fromReviewFormResponse(
+                ReviewFormResponse.fromReviewForm(reviewForm),
+                SubjectResponse.fromSubject(reviewForm.getClassSubject().getSubject())
+        );
+        List<StudentDevice> deviceList = studentDeviceRepository.findByStudentId(reviewForm.getStudent().getId());
+
+        for(var device : deviceList) {
+            notificationRequest.setFcmToken(device.getFcmToken());
+            fcmService.sendReviewFormNotification(notificationRequest);
+        }
         return true;
     }
 
