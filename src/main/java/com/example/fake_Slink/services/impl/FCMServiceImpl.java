@@ -80,7 +80,7 @@ public class FCMServiceImpl implements FCMService {
         Message message = Message.builder()
                 .setToken(request.getFcmToken())
                 .putData("classify", request.getClassify())
-                .putData("gradeResponse", new Gson().toJson(request.getReviewFormResponse()))
+                .putData("reviewFormResponse", new Gson().toJson(request.getReviewFormResponse()))
                 .putData("title", request.getTitle())
                 .putData("message", request.getMessage())
                 .putData("createAt", new Gson().toJson(request.getCreateAt()))
