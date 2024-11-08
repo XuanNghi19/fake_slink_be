@@ -29,7 +29,7 @@ public class FCMServiceImpl implements FCMService {
     @PostConstruct
     public void initialize() throws Exception{
         String firebaseConfigJson = System.getenv("FIREBASE_CONFIG_JSON");
-        if(firebaseConfigJson != null) {
+        if(firebaseConfigJson == null) {
             throw new IllegalAccessException("firebase configuration is missing");
         }
         InputStream serviceAccount = new ByteArrayInputStream(firebaseConfigJson.getBytes(StandardCharsets.UTF_8));
