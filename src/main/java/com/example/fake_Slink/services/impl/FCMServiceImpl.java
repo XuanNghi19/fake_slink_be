@@ -15,7 +15,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 import jakarta.annotation.PostConstruct;
 
@@ -24,12 +27,18 @@ import jakarta.annotation.PostConstruct;
 public class FCMServiceImpl implements FCMService {
 
     @PostConstruct
-    public void initialize() {
-        String firebaseConfigPath = System.getenv("FIREBASE_CONFIG_JSON");
+    public void initialize() throws Exception{
+        String firebaseConfigJson = System.getenv("FIREBASE_CONFIG_JSON");
+        if(firebaseConfigJson != null) {
+            throw new IllegalAccessException("firebase configuration is missing");
+        }
+        InputStream serviceAccount = new ByteArrayInputStream(firebaseConfigJson.getBytes(StandardCharsets.UTF_8));
+
         try {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials
-                            .fromStream(new ClassPathResource(firebaseConfigPath).getInputStream()))
+                            .fromStream(serviceAccount)
+                    )
                     .build();
 
             FirebaseApp firebaseApp;
