@@ -8,6 +8,7 @@ import com.example.fake_Slink.dtos.responses.StudentResponse;
 import com.example.fake_Slink.enums.Role;
 import com.example.fake_Slink.models.*;
 import com.example.fake_Slink.repositories.*;
+import com.example.fake_Slink.services.FCMService;
 import com.example.fake_Slink.services.StudentService;
 import com.nimbusds.jwt.SignedJWT;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,7 @@ public class StudentServiceImpl implements StudentService {
     private final PasswordEncoder passwordEncoder;
     private final DraftStudentNumRepository draftStudentNumRepositories;
     private final MajorRepository majorRepositories;
+    private final FCMService fcmService;
 
     @Transactional
     @Override
@@ -84,6 +86,29 @@ public class StudentServiceImpl implements StudentService {
         }
         throw new Exception("Thong tin dang nhap khong chinh xac");
     }
+
+    @Override
+    public AuthenticationResponse authenticationWithMobilePhone(
+            AuthenticationRequest authenticationRequests,
+            UpdateStudentDeviceRequest request
+    ) throws Exception {
+        Student existingStudent = studentRepositories.findByIdNum(authenticationRequests.getIdNum())
+                .orElseThrow(() -> new Exception("Khong tim thay sinh vien voi idNum: " + authenticationRequests.getIdNum()));
+        if (passwordEncoder.matches(authenticationRequests.getPassword(), existingStudent.getPassword())) {
+            String token = jwtUtils.generateToken(existingStudent);
+
+            fcmService.updateStudentDevice(
+                    request
+            );
+
+            return AuthenticationResponse.builder()
+                    .token(token)
+                    .authenticated(true)
+                    .build();
+        }
+        throw new Exception("Thong tin dang nhap khong chinh xac");
+    }
+
     @Override
     public StudentResponse getStudentDetail(String token) throws Exception {
         IntrospectResponse introspectResponse = jwtUtils.introspect(token);

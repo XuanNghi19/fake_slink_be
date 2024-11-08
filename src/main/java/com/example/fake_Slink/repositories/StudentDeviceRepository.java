@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface StudentDeviceRepository extends JpaRepository<StudentDevice, Long> {
     List<StudentDevice> findByStudentId(int studentId);
+    boolean existsByFcmTokenAndStudent(String fcmToken, int studentId);
 }

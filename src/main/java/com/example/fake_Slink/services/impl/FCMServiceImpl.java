@@ -2,6 +2,11 @@ package com.example.fake_Slink.services.impl;
 
 import com.example.fake_Slink.dtos.requests.GradeNotificationRequest;
 import com.example.fake_Slink.dtos.requests.ReviewFormNotificationRequest;
+import com.example.fake_Slink.dtos.requests.UpdateStudentDeviceRequest;
+import com.example.fake_Slink.models.Student;
+import com.example.fake_Slink.models.StudentDevice;
+import com.example.fake_Slink.repositories.StudentDeviceRepository;
+import com.example.fake_Slink.repositories.StudentRepository;
 import com.example.fake_Slink.services.FCMService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -10,9 +15,8 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
@@ -23,8 +27,12 @@ import java.nio.charset.StandardCharsets;
 import jakarta.annotation.PostConstruct;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class FCMServiceImpl implements FCMService {
+
+    StudentDeviceRepository studentDeviceRepository;
+    StudentRepository studentRepository;
 
     @PostConstruct
     public void initialize() throws Exception{
@@ -80,5 +88,20 @@ public class FCMServiceImpl implements FCMService {
 
         String response = FirebaseMessaging.getInstance().send(message);
         log.info("Successfully send notification: " + response);
+    }
+
+    @Override
+    public void updateStudentDevice(UpdateStudentDeviceRequest request) throws Exception {
+        Student student = studentRepository.findByIdNum(request.getStudentIdNum())
+                        .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idnum: " + request.getStudentIdNum()));
+
+        if(studentDeviceRepository.existsByFcmTokenAndStudent(request.getFcmToken(), student.getId())) {
+            return;
+        }
+
+        studentDeviceRepository.save(StudentDevice.fromUpdateStudentDeviceRequest(
+           request,
+           student.getId()
+        ));
     }
 }
