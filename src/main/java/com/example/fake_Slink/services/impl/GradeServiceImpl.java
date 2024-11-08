@@ -68,7 +68,7 @@ public class GradeServiceImpl implements GradeService {
             GradeNotificationRequest notificationRequest = GradeNotificationRequest.fromGradeResponse(
                     GradeResponse.fromGrade(grade)
             );
-            List<StudentDevice> deviceList = studentDeviceRepository.findByStudentId(student.getId());
+            List<StudentDevice> deviceList = studentDeviceRepository.findByStudent(student);
 
             for(var device : deviceList) {
                 notificationRequest.setFcmToken(device.getFcmToken());

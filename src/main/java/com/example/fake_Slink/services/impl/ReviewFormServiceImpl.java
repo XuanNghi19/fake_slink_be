@@ -86,7 +86,7 @@ public class ReviewFormServiceImpl implements ReviewFormService {
                 ReviewFormResponse.fromReviewForm(reviewForm),
                 SubjectResponse.fromSubject(reviewForm.getClassSubject().getSubject())
         );
-        List<StudentDevice> deviceList = studentDeviceRepository.findByStudentId(reviewForm.getStudent().getId());
+        List<StudentDevice> deviceList = studentDeviceRepository.findByStudent(reviewForm.getStudent());
 
         for(var device : deviceList) {
             notificationRequest.setFcmToken(device.getFcmToken());
