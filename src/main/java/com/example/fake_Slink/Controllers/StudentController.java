@@ -4,9 +4,11 @@ import com.example.fake_Slink.dtos.requests.*;
 import com.example.fake_Slink.dtos.responses.ApiResponse;
 import com.example.fake_Slink.dtos.responses.AuthenticationResponse;
 import com.example.fake_Slink.dtos.responses.StudentResponse;
+import com.example.fake_Slink.services.FCMService;
 import com.example.fake_Slink.services.StudentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.sql.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -70,6 +72,39 @@ public class StudentController {
 
         try {
             AuthenticationResponse response = studentServices.authentication(authenticationRequest);
+            return ApiResponse.<AuthenticationResponse>builder()
+                    .code(HttpStatus.OK.value())
+                    .result(response)
+                    .message(HttpStatus.OK.toString())
+                    .build();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @PostMapping("mobile/student_authentication")
+    public ApiResponse<?> studentAuthenticationWithMobilePhone(
+            @RequestBody @Valid AuthenticationRequest authenticationRequest,
+            @RequestBody @Valid UpdateStudentDeviceRequest request,
+            BindingResult result
+    ) {
+        if(result.hasErrors()) {
+            List<String> errorMessages = result.getFieldErrors()
+                    .stream()
+                    .map(FieldError::getDefaultMessage)
+                    .toList();
+            return ApiResponse.<Boolean>builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message(errorMessages.toString())
+                    .result(false)
+                    .build();
+        }
+
+        try {
+            AuthenticationResponse response = studentServices.authenticationWithMobilePhone(
+                    authenticationRequest,
+                    request
+            );
             return ApiResponse.<AuthenticationResponse>builder()
                     .code(HttpStatus.OK.value())
                     .result(response)
