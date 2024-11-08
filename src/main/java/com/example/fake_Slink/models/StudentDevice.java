@@ -1,5 +1,6 @@
 package com.example.fake_Slink.models;
 
+import com.example.fake_Slink.dtos.requests.UpdateStudentDeviceRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +28,15 @@ public class StudentDevice {
 
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
+
+    static public StudentDevice fromUpdateStudentDeviceRequest(
+            UpdateStudentDeviceRequest request,
+            int studentId
+    ) {
+        return StudentDevice.builder()
+                .fcmToken(request.getFcmToken())
+                .studentId(studentId)
+                .lastUpdated(request.getLastUpdated())
+                .build();
+    }
 }
