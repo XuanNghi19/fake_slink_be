@@ -88,7 +88,7 @@ public class FCMServiceImpl implements FCMService {
 
     @Override
     public void updateStudentDevice(UpdateStudentDeviceRequest request, Student student) throws Exception {
-        if(studentDeviceRepository.existsByFcmTokenAndStudent(request.getFcmToken(), student.getId())) {
+        if(studentDeviceRepository.existsByFcmTokenAndStudent(request.getFcmToken(), student)) {
             return;
         }
 
