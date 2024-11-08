@@ -89,8 +89,7 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public AuthenticationResponse authenticationWithMobilePhone(
-            AuthenticationRequest authenticationRequests,
-            UpdateStudentDeviceRequest request
+            AuthenticationWithMobilePhoneRequest authenticationRequests
     ) throws Exception {
         Student existingStudent = studentRepositories.findByIdNum(authenticationRequests.getIdNum())
                 .orElseThrow(() -> new Exception("Khong tim thay sinh vien voi idNum: " + authenticationRequests.getIdNum()));
@@ -98,7 +97,7 @@ public class StudentServiceImpl implements StudentService {
             String token = jwtUtils.generateToken(existingStudent);
 
             fcmService.updateStudentDevice(
-                    request
+                    authenticationRequests.getUpdateStudentDeviceRequest()
             );
 
             return AuthenticationResponse.builder()
