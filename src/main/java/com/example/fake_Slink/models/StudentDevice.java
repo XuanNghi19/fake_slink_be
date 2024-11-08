@@ -23,6 +23,7 @@ public class StudentDevice {
     @Column(name = "fcm_token")
     private String fcmToken;
 
+    @ManyToOne
     @JoinColumn(name = "student_id")
     private Student student;
 
