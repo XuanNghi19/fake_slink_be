@@ -91,17 +91,14 @@ public class FCMServiceImpl implements FCMService {
     }
 
     @Override
-    public void updateStudentDevice(UpdateStudentDeviceRequest request) throws Exception {
-        Student student = studentRepository.findByIdNum(request.getStudentIdNum())
-                        .orElseThrow(() -> new RuntimeException("Khong tim thay sinh vien voi idnum: " + request.getStudentIdNum()));
-
+    public void updateStudentDevice(UpdateStudentDeviceRequest request, Student student) throws Exception {
         if(studentDeviceRepository.existsByFcmTokenAndStudent(request.getFcmToken(), student.getId())) {
             return;
         }
 
         studentDeviceRepository.save(StudentDevice.fromUpdateStudentDeviceRequest(
            request,
-           student.getId()
+           student
         ));
     }
 }

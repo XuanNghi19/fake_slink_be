@@ -24,18 +24,18 @@ public class StudentDevice {
     private String fcmToken;
 
     @JoinColumn(name = "student_id")
-    private int studentId;
+    private Student student;
 
     @Column(name = "last_updated")
     private LocalDateTime lastUpdated;
 
     static public StudentDevice fromUpdateStudentDeviceRequest(
             UpdateStudentDeviceRequest request,
-            int studentId
+            Student student
     ) {
         return StudentDevice.builder()
                 .fcmToken(request.getFcmToken())
-                .studentId(studentId)
+                .student(student)
                 .lastUpdated(request.getLastUpdated())
                 .build();
     }
