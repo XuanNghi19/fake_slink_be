@@ -17,7 +17,5 @@ public class UpdateStudentDeviceRequest {
     
     String fcmToken;
     
-    String studentIdNum;
-    
     LocalDateTime lastUpdated;
 }

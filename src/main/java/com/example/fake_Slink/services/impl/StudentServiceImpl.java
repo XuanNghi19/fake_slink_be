@@ -97,7 +97,8 @@ public class StudentServiceImpl implements StudentService {
             String token = jwtUtils.generateToken(existingStudent);
 
             fcmService.updateStudentDevice(
-                    authenticationRequests.getUpdateStudentDeviceRequest()
+                    authenticationRequests.getUpdateStudentDeviceRequest(),
+                    existingStudent
             );
 
             return AuthenticationResponse.builder()
