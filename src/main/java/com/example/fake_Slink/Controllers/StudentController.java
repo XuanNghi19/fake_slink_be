@@ -84,8 +84,7 @@ public class StudentController {
 
     @PostMapping("mobile/student_authentication")
     public ApiResponse<?> studentAuthenticationWithMobilePhone(
-            @RequestBody @Valid AuthenticationRequest authenticationRequest,
-            @RequestBody @Valid UpdateStudentDeviceRequest request,
+            @RequestBody @Valid AuthenticationWithMobilePhoneRequest authenticationRequest,
             BindingResult result
     ) {
         if(result.hasErrors()) {
@@ -101,10 +100,7 @@ public class StudentController {
         }
 
         try {
-            AuthenticationResponse response = studentServices.authenticationWithMobilePhone(
-                    authenticationRequest,
-                    request
-            );
+            AuthenticationResponse response = studentServices.authenticationWithMobilePhone(authenticationRequest);
             return ApiResponse.<AuthenticationResponse>builder()
                     .code(HttpStatus.OK.value())
                     .result(response)
