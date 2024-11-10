@@ -6,6 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Builder
 @Data
@@ -35,6 +36,7 @@ public class ReviewFormNotificationRequest {
                 .classify("reviewForm")
                 .reviewFormResponse(response)
                 .title("Cập nhật đơn phúc khảo!")
+                .createAt(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")))
                 .message(message)
                 .build();
     }
