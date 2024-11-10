@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 @Builder
 @Data
@@ -24,7 +25,7 @@ public class ReviewFormNotificationRequest {
 
     String message;
 
-    LocalDateTime createAt;
+    Date createAt;
 
 
     static public ReviewFormNotificationRequest fromReviewFormResponse(
@@ -36,7 +37,7 @@ public class ReviewFormNotificationRequest {
                 .classify("reviewForm")
                 .reviewFormResponse(response)
                 .title("Cập nhật đơn phúc khảo!")
-                .createAt(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")))
+                .createAt(new Date())
                 .message(message)
                 .build();
     }
