@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Date;
 
 @Builder
 @Data
@@ -24,7 +25,7 @@ public class GradeNotificationRequest {
 
     String message;
 
-    LocalDateTime createAt;
+    Date createAt;
 
     static public GradeNotificationRequest fromGradeResponse(
             GradeResponse gradeResponse
@@ -36,7 +37,7 @@ public class GradeNotificationRequest {
                 .gradeResponse(gradeResponse)
                 .title("Cập nhật điểm học phần!")
                 .message(message)
-                .createAt(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")))
+                .createAt(new Date())
                 .build();
     }
 }
