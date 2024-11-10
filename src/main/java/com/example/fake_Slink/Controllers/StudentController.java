@@ -82,7 +82,7 @@ public class StudentController {
         }
     }
 
-    @PostMapping("mobile/student_authentication")
+    @PostMapping("/mobile/student_authentication")
     public ApiResponse<?> studentAuthenticationWithMobilePhone(
             @RequestBody @Valid AuthenticationWithMobilePhoneRequest authenticationRequest,
             BindingResult result

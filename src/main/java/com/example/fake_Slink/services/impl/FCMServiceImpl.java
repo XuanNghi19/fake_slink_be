@@ -6,7 +6,6 @@ import com.example.fake_Slink.dtos.requests.UpdateStudentDeviceRequest;
 import com.example.fake_Slink.models.Student;
 import com.example.fake_Slink.models.StudentDevice;
 import com.example.fake_Slink.repositories.StudentDeviceRepository;
-import com.example.fake_Slink.repositories.StudentRepository;
 import com.example.fake_Slink.services.FCMService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -31,8 +30,7 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class FCMServiceImpl implements FCMService {
 
-    StudentDeviceRepository studentDeviceRepository;
-    StudentRepository studentRepository;
+    private final StudentDeviceRepository studentDeviceRepository;
 
     @PostConstruct
     public void initialize() throws Exception{
