@@ -61,7 +61,7 @@ public class FCMServiceImpl implements FCMService {
     }
 
     @Override
-    public void sendGradedNotification(GradeNotificationRequest request) throws FirebaseMessagingException {
+    public void sendGradedNotification(GradeNotificationRequest request) {
         Message message = Message.builder()
                 .setToken(request.getFcmToken())
                 .putData("classify", request.getClassify())
@@ -71,12 +71,22 @@ public class FCMServiceImpl implements FCMService {
                 .putData("createAt", new Gson().toJson(request.getCreateAt()))
                 .build();
 
-        String response = FirebaseMessaging.getInstance().send(message);
-        log.info("Successfully send notification: " + response);
+        try {
+            String response = FirebaseMessaging.getInstance().send(message);
+            log.info("Successfully send notification: " + response);
+        } catch (FirebaseMessagingException e) {
+            log.error("Error sending notification, " + e.getMessage());
+
+            if (e.getMessage().contains("InvalidRegistration") || e.getMessage().contains("NotRegistered")) {
+                log.error("FCM token is invalid or the device is no longer active.");
+            } else {
+                log.error("Unknown FirebaseMessagingException: " + e.getMessage());
+            }
+        }
     }
 
     @Override
-    public void sendReviewFormNotification(ReviewFormNotificationRequest request) throws FirebaseMessagingException {
+    public void sendReviewFormNotification(ReviewFormNotificationRequest request) {
         Message message = Message.builder()
                 .setToken(request.getFcmToken())
                 .putData("classify", request.getClassify())
@@ -86,8 +96,18 @@ public class FCMServiceImpl implements FCMService {
                 .putData("createAt", new Gson().toJson(request.getCreateAt()))
                 .build();
 
-        String response = FirebaseMessaging.getInstance().send(message);
-        log.info("Successfully send notification: " + response);
+        try {
+            String response = FirebaseMessaging.getInstance().send(message);
+            log.info("Successfully send notification: " + response);
+        } catch (FirebaseMessagingException e) {
+            log.error("Error sending notification, " + e.getMessage());
+
+            if (e.getMessage().contains("InvalidRegistration") || e.getMessage().contains("NotRegistered")) {
+                log.error("FCM token is invalid or the device is no longer active.");
+            } else {
+                log.error("Unknown FirebaseMessagingException: " + e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -97,8 +117,10 @@ public class FCMServiceImpl implements FCMService {
         }
 
         studentDeviceRepository.save(StudentDevice.fromUpdateStudentDeviceRequest(
-           request,
-           student
+                request,
+                student
         ));
     }
+
+
 }
