@@ -7,7 +7,7 @@ import com.example.fake_Slink.models.Student;
 import com.google.firebase.messaging.FirebaseMessagingException;
 
 public interface FCMService {
-    void sendGradedNotification(GradeNotificationRequest request) throws FirebaseMessagingException;
-    void sendReviewFormNotification(ReviewFormNotificationRequest request) throws FirebaseMessagingException;
+    void sendGradedNotification(GradeNotificationRequest request);
+    void sendReviewFormNotification(ReviewFormNotificationRequest request);
     void updateStudentDevice(UpdateStudentDeviceRequest request, Student student) throws Exception;
 }
